@@ -1,0 +1,58 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # Site servi sous https://<user>.github.io/CityTimeline-Mod/
+      BASE_PATH: /CityTimeline-Mod/
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - run: bun install --frozen-lockfile
+
+      - name: Build (static)
+        run: bun run build
+
+      - name: Prepare static output
+        run: |
+          OUT=".output/public"
+          test -d "$OUT" || OUT="dist"
+          touch "$OUT/.nojekyll"
+          # SPA fallback pour GitHub Pages
+          cp "$OUT/index.html" "$OUT/404.html" 2>/dev/null || true
+          echo "OUT_DIR=$OUT" >> $GITHUB_ENV
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.OUT_DIR }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
