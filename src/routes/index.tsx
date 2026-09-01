@@ -480,24 +480,39 @@ function Index() {
             <div className="panel relative overflow-hidden p-8 sm:p-14">
               <div className="pointer-events-none absolute inset-0 grid-bg opacity-60" aria-hidden />
               <div className="relative max-w-2xl">
-                <p className="label-mono text-primary">06 — Open Source</p>
-                <h2 className="mt-4 text-3xl font-semibold sm:text-4xl">
-                  Code ouvert, contributions bienvenues
-                </h2>
+                <p className="label-mono text-primary">06 — Développement public</p>
+                <h2 className="mt-4 text-3xl font-semibold sm:text-4xl">Développement public</h2>
                 <p className="mt-4 text-muted-foreground">
                   CityTimelineMod est développé publiquement. Le dépôt contient le code du mod, les
-                  notes de recherche et l'état d'avancement des couches expérimentales. Issues,
-                  tests et retours sur les bundles GeoJSON sont particulièrement utiles.
+                  notes de recherche et l'état d'avancement des couches expérimentales. Aucune
+                  licence open source n'a encore été retenue : le code est consultable, sans
+                  conditions de réutilisation définies à ce stade.
                 </p>
-                <a
-                  href={REPO}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-8 inline-flex items-center gap-3 rounded-md bg-primary px-6 py-4 text-base font-semibold text-primary-foreground transition-opacity hover:opacity-90"
-                >
-                  <Github className="size-5" aria-hidden />
-                  Giscolab/CityTimeline-Mod
-                </a>
+                <p className="mt-4 text-sm text-muted-foreground">
+                  Les bundles GeoJSON consommés par le mod sont produits par{" "}
+                  <strong>cs2-realmap-generator</strong> (extraction OpenStreetMap, zonage, packs
+                  GeoJSON).
+                </p>
+                <div className="mt-8 flex flex-wrap items-center gap-3">
+                  <a
+                    href={REPO}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-3 rounded-md bg-primary px-6 py-4 text-base font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+                  >
+                    <Github className="size-5" aria-hidden />
+                    Giscolab/CityTimeline-Mod
+                  </a>
+                  <a
+                    href={REALMAP_REPO}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-3 rounded-md border border-border px-6 py-4 text-base font-medium transition-colors hover:border-primary hover:text-primary"
+                  >
+                    <Github className="size-5" aria-hidden />
+                    Giscolab/cs2-realmap-generator
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -506,7 +521,10 @@ function Index() {
 
       <footer className="relative z-10 border-t border-border">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-5 py-8 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p>CityTimelineMod · mod géospatial expérimental pour Cities: Skylines II.</p>
+          <p>
+            CityTimelineMod · overlays GeoJSON et visualisation géospatiale pour Cities: Skylines II
+            · développement expérimental.
+          </p>
           <a href={REPO} target="_blank" rel="noreferrer" className="hover:text-primary">
             github.com/Giscolab/CityTimeline-Mod
           </a>
