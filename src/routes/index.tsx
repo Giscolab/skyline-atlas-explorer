@@ -17,9 +17,11 @@ import {
 import { MapPlot } from "@/components/MapPlot";
 
 const REPO = "https://github.com/Giscolab/CityTimeline-Mod";
-const TITLE = "CityTimelineMod — Construisez des villes depuis le monde réel";
+const REALMAP_REPO = "https://github.com/Giscolab/cs2-realmap-generator";
+const SITE_URL = "https://giscolab.github.io/CityTimeline-Mod/";
+const TITLE = "CityTimelineMod — Overlays GeoJSON géospatiaux pour Cities: Skylines II";
 const DESCRIPTION =
-  "Mod géospatial expérimental pour Cities: Skylines II : chargement de bundles GeoJSON RealMap, calques routes, eau, zonage et rail, calibration du terrain et système LargeMap / PlayableWorld de 57,344 km.";
+  "Mod de visualisation géospatiale pour Cities: Skylines II : chargement de bundles GeoJSON RealMap, calques routes, eau, zonage et rail, calibration spatiale et guidage géographique in-game. Extension LargeMap / PlayableWorld 57,344 km expérimentale.";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -30,12 +32,12 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: SITE_URL },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: TITLE },
       { name: "twitter:description", content: DESCRIPTION },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: SITE_URL }],
     scripts: [
       {
         type: "application/ld+json",
@@ -106,21 +108,21 @@ const architecture = [
 
 const status = [
   {
-    state: "Expérimental",
-    tone: "primary" as const,
-    items: [
-      "Système LargeMap / PlayableWorld 57,344 km",
-      "Calibration automatique du terrain",
-      "Stabilité du rendu sur bundles très larges",
-    ],
-  },
-  {
-    state: "En cours",
+    state: "Implémenté",
     tone: "accent" as const,
     items: [
       "Chargement des bundles GeoJSON RealMap",
       "Rendu des calques routes, eau, zonage, rail",
       "Contrôles d'affichage des overlays",
+    ],
+  },
+  {
+    state: "Expérimental",
+    tone: "primary" as const,
+    items: [
+      "Calibration et alignement du terrain",
+      "Extension LargeMap / PlayableWorld 57,344 km",
+      "Stabilisation à l'exécution sur bundles très larges",
     ],
   },
   {
@@ -175,7 +177,7 @@ function Index() {
           <nav className="hidden items-center gap-6 md:flex">
             {[
               ["#overview", "Overview"],
-              ["#world", "57 km World"],
+              ["#world", "LargeMap (exp.)"],
               ["#layers", "Calques"],
               ["#architecture", "Architecture"],
               ["#status", "Statut"],
@@ -208,21 +210,22 @@ function Index() {
             <div>
               <p className="label-mono inline-flex items-center gap-2 rounded-full border border-border px-3 py-1">
                 <FlaskConical className="size-3.5 text-primary" aria-hidden />
-                Mod expérimental · Cities: Skylines II
+                Overlays géospatiaux · Cities: Skylines II
               </p>
               <h1 className="mt-6 text-balance text-4xl font-semibold leading-[1.05] sm:text-6xl">
                 Build cities from the real world.
               </h1>
               <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-                CityTimelineMod charge des bundles GeoJSON <strong>RealMap</strong> et les rend
-                directement dans le jeu : routes, eau, zonage et rail en calques superposés. Il
-                fournit des outils de calibration du terrain et explore un système{" "}
-                <strong>LargeMap / PlayableWorld</strong> visant une emprise de{" "}
-                <strong>57,344 km</strong>.
+                CityTimelineMod est avant tout un mod d'<strong>overlays GeoJSON</strong> et de{" "}
+                <strong>visualisation géospatiale</strong> : il charge des bundles{" "}
+                <strong>RealMap</strong> et les affiche directement en jeu — routes, eau, zonage et
+                rail en calques superposés — avec calibration spatiale pour un guidage géographique
+                pendant la construction.
               </p>
               <p className="mt-4 max-w-xl text-sm text-muted-foreground">
-                Projet de recherche en développement actif : les fonctionnalités décrites ici sont
-                expérimentales et peuvent changer ou échouer.
+                Le chargement des bundles et le rendu des overlays sont implémentés. Le terrain,
+                l'extension <strong>LargeMap / PlayableWorld 57,344 km</strong> et la stabilisation à
+                l'exécution restent expérimentaux.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-3">
                 <a
@@ -242,10 +245,10 @@ function Index() {
               </div>
               <dl className="mt-12 grid grid-cols-2 gap-6 border-t border-border pt-6 sm:grid-cols-4">
                 {[
-                  ["57,344 km", "LargeMap visé"],
                   ["4", "Calques géo"],
                   ["GeoJSON", "Format source"],
-                  ["Alpha", "Maturité"],
+                  ["57,344 km", "LargeMap · exp."],
+                  ["Expérimental", "Développement"],
                 ].map(([v, k]) => (
                   <div key={k}>
                     <dt className="label-mono">{k}</dt>
@@ -290,8 +293,8 @@ function Index() {
             <SectionHeading
               index="01"
               kicker="Overview"
-              title="Un pont entre données géographiques et terrain de jeu"
-              lead="CityTimelineMod traite le monde réel comme une source de données : il importe des bundles GeoJSON préparés par RealMap, les projette dans l'espace du jeu et les affiche en calques lisibles pour guider la construction."
+              title="Visualisation géospatiale et guidage in-game"
+              lead="Le cœur du projet : importer des bundles GeoJSON préparés par RealMap (cs2-realmap-generator), les projeter dans l'espace du jeu et les afficher en calques lisibles qui servent de repères géographiques pendant la construction."
             />
             <div className="mt-12 grid gap-4 md:grid-cols-3">
               {[
@@ -307,8 +310,8 @@ function Index() {
                 },
                 {
                   icon: Mountain,
-                  t: "Calibration du terrain",
-                  b: "Des réglages d'échelle et d'alignement permettent d'ajuster la correspondance entre relief du jeu et données sources.",
+                  t: "Calibration spatiale",
+                  b: "Réglages d'échelle, de décalage et d'orientation pour aligner les géométries sur le terrain de jeu ; le calage du relief reste expérimental.",
                 },
               ].map(({ icon: Icon, t, b }) => (
                 <article key={t} className="panel p-6">
@@ -327,12 +330,13 @@ function Index() {
             <div>
               <SectionHeading
                 index="02"
-                kicker="57 km World"
-                title="LargeMap / PlayableWorld — expérimental"
-                lead="Le système explore une emprise étendue de 57,344 km : le monde large sert de contexte géographique continu, tandis qu'une zone jouable plus restreinte reste la surface de construction."
+                kicker="Extension expérimentale"
+                title="LargeMap / PlayableWorld — extension, pas objectif principal"
+                lead="Cette couche est une extension exploratoire du mod, et non sa finalité : elle teste une emprise étendue de 57,344 km, où le monde large sert de contexte géographique continu autour d'une zone jouable plus restreinte."
               />
               <ul className="mt-8 space-y-4 text-sm text-muted-foreground">
                 {[
+                  "Extension optionnelle : le mod fonctionne sans elle, autour des overlays GeoJSON.",
                   "Séparation explicite entre LargeMap (contexte) et PlayableWorld (zone jouable).",
                   "Objectif : conserver la continuité des tracés géographiques au-delà des limites de carte.",
                   "Travaux en cours sur la précision de projection et le coût mémoire des grands bundles.",
@@ -477,24 +481,39 @@ function Index() {
             <div className="panel relative overflow-hidden p-8 sm:p-14">
               <div className="pointer-events-none absolute inset-0 grid-bg opacity-60" aria-hidden />
               <div className="relative max-w-2xl">
-                <p className="label-mono text-primary">06 — Open Source</p>
-                <h2 className="mt-4 text-3xl font-semibold sm:text-4xl">
-                  Code ouvert, contributions bienvenues
-                </h2>
+                <p className="label-mono text-primary">06 — Développement public</p>
+                <h2 className="mt-4 text-3xl font-semibold sm:text-4xl">Développement public</h2>
                 <p className="mt-4 text-muted-foreground">
                   CityTimelineMod est développé publiquement. Le dépôt contient le code du mod, les
-                  notes de recherche et l'état d'avancement des couches expérimentales. Issues,
-                  tests et retours sur les bundles GeoJSON sont particulièrement utiles.
+                  notes de recherche et l'état d'avancement des couches expérimentales. Aucune
+                  licence open source n'a encore été retenue : le code est consultable, sans
+                  conditions de réutilisation définies à ce stade.
                 </p>
-                <a
-                  href={REPO}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-8 inline-flex items-center gap-3 rounded-md bg-primary px-6 py-4 text-base font-semibold text-primary-foreground transition-opacity hover:opacity-90"
-                >
-                  <Github className="size-5" aria-hidden />
-                  Giscolab/CityTimeline-Mod
-                </a>
+                <p className="mt-4 text-sm text-muted-foreground">
+                  Les bundles GeoJSON consommés par le mod sont produits par{" "}
+                  <strong>cs2-realmap-generator</strong> (extraction OpenStreetMap, zonage, packs
+                  GeoJSON).
+                </p>
+                <div className="mt-8 flex flex-wrap items-center gap-3">
+                  <a
+                    href={REPO}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-3 rounded-md bg-primary px-6 py-4 text-base font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+                  >
+                    <Github className="size-5" aria-hidden />
+                    Giscolab/CityTimeline-Mod
+                  </a>
+                  <a
+                    href={REALMAP_REPO}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-3 rounded-md border border-border px-6 py-4 text-base font-medium transition-colors hover:border-primary hover:text-primary"
+                  >
+                    <Github className="size-5" aria-hidden />
+                    Giscolab/cs2-realmap-generator
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -503,7 +522,10 @@ function Index() {
 
       <footer className="relative z-10 border-t border-border">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-5 py-8 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p>CityTimelineMod · mod géospatial expérimental pour Cities: Skylines II.</p>
+          <p>
+            CityTimelineMod · overlays GeoJSON et visualisation géospatiale pour Cities: Skylines II
+            · développement expérimental.
+          </p>
           <a href={REPO} target="_blank" rel="noreferrer" className="hover:text-primary">
             github.com/Giscolab/CityTimeline-Mod
           </a>
