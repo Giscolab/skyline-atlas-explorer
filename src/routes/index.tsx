@@ -18,6 +18,7 @@ import { MapPlot } from "@/components/MapPlot";
 
 const REPO = "https://github.com/Giscolab/CityTimeline-Mod";
 const REALMAP_REPO = "https://github.com/Giscolab/cs2-realmap-generator";
+const SITE_URL = "https://giscolab.github.io/CityTimeline-Mod/";
 const TITLE = "CityTimelineMod — Overlays GeoJSON géospatiaux pour Cities: Skylines II";
 const DESCRIPTION =
   "Mod de visualisation géospatiale pour Cities: Skylines II : chargement de bundles GeoJSON RealMap, calques routes, eau, zonage et rail, calibration spatiale et guidage géographique in-game. Extension LargeMap / PlayableWorld 57,344 km expérimentale.";
