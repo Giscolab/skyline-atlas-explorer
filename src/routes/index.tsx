@@ -244,10 +244,10 @@ function Index() {
               </div>
               <dl className="mt-12 grid grid-cols-2 gap-6 border-t border-border pt-6 sm:grid-cols-4">
                 {[
-                  ["57,344 km", "LargeMap visé"],
                   ["4", "Calques géo"],
                   ["GeoJSON", "Format source"],
-                  ["Alpha", "Maturité"],
+                  ["57,344 km", "LargeMap · exp."],
+                  ["Expérimental", "Développement"],
                 ].map(([v, k]) => (
                   <div key={k}>
                     <dt className="label-mono">{k}</dt>
