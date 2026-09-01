@@ -176,7 +176,7 @@ function Index() {
           <nav className="hidden items-center gap-6 md:flex">
             {[
               ["#overview", "Overview"],
-              ["#world", "57 km World"],
+              ["#world", "LargeMap (exp.)"],
               ["#layers", "Calques"],
               ["#architecture", "Architecture"],
               ["#status", "Statut"],
