@@ -292,8 +292,8 @@ function Index() {
             <SectionHeading
               index="01"
               kicker="Overview"
-              title="Un pont entre données géographiques et terrain de jeu"
-              lead="CityTimelineMod traite le monde réel comme une source de données : il importe des bundles GeoJSON préparés par RealMap, les projette dans l'espace du jeu et les affiche en calques lisibles pour guider la construction."
+              title="Visualisation géospatiale et guidage in-game"
+              lead="Le cœur du projet : importer des bundles GeoJSON préparés par RealMap (cs2-realmap-generator), les projeter dans l'espace du jeu et les afficher en calques lisibles qui servent de repères géographiques pendant la construction."
             />
             <div className="mt-12 grid gap-4 md:grid-cols-3">
               {[
@@ -309,8 +309,8 @@ function Index() {
                 },
                 {
                   icon: Mountain,
-                  t: "Calibration du terrain",
-                  b: "Des réglages d'échelle et d'alignement permettent d'ajuster la correspondance entre relief du jeu et données sources.",
+                  t: "Calibration spatiale",
+                  b: "Réglages d'échelle, de décalage et d'orientation pour aligner les géométries sur le terrain de jeu ; le calage du relief reste expérimental.",
                 },
               ].map(({ icon: Icon, t, b }) => (
                 <article key={t} className="panel p-6">
@@ -329,12 +329,13 @@ function Index() {
             <div>
               <SectionHeading
                 index="02"
-                kicker="57 km World"
-                title="LargeMap / PlayableWorld — expérimental"
-                lead="Le système explore une emprise étendue de 57,344 km : le monde large sert de contexte géographique continu, tandis qu'une zone jouable plus restreinte reste la surface de construction."
+                kicker="Extension expérimentale"
+                title="LargeMap / PlayableWorld — extension, pas objectif principal"
+                lead="Cette couche est une extension exploratoire du mod, et non sa finalité : elle teste une emprise étendue de 57,344 km, où le monde large sert de contexte géographique continu autour d'une zone jouable plus restreinte."
               />
               <ul className="mt-8 space-y-4 text-sm text-muted-foreground">
                 {[
+                  "Extension optionnelle : le mod fonctionne sans elle, autour des overlays GeoJSON.",
                   "Séparation explicite entre LargeMap (contexte) et PlayableWorld (zone jouable).",
                   "Objectif : conserver la continuité des tracés géographiques au-delà des limites de carte.",
                   "Travaux en cours sur la précision de projection et le coût mémoire des grands bundles.",
