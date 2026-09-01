@@ -209,21 +209,22 @@ function Index() {
             <div>
               <p className="label-mono inline-flex items-center gap-2 rounded-full border border-border px-3 py-1">
                 <FlaskConical className="size-3.5 text-primary" aria-hidden />
-                Mod expérimental · Cities: Skylines II
+                Overlays géospatiaux · Cities: Skylines II
               </p>
               <h1 className="mt-6 text-balance text-4xl font-semibold leading-[1.05] sm:text-6xl">
                 Build cities from the real world.
               </h1>
               <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-                CityTimelineMod charge des bundles GeoJSON <strong>RealMap</strong> et les rend
-                directement dans le jeu : routes, eau, zonage et rail en calques superposés. Il
-                fournit des outils de calibration du terrain et explore un système{" "}
-                <strong>LargeMap / PlayableWorld</strong> visant une emprise de{" "}
-                <strong>57,344 km</strong>.
+                CityTimelineMod est avant tout un mod d'<strong>overlays GeoJSON</strong> et de{" "}
+                <strong>visualisation géospatiale</strong> : il charge des bundles{" "}
+                <strong>RealMap</strong> et les affiche directement en jeu — routes, eau, zonage et
+                rail en calques superposés — avec calibration spatiale pour un guidage géographique
+                pendant la construction.
               </p>
               <p className="mt-4 max-w-xl text-sm text-muted-foreground">
-                Projet de recherche en développement actif : les fonctionnalités décrites ici sont
-                expérimentales et peuvent changer ou échouer.
+                Le chargement des bundles et le rendu des overlays sont implémentés. Le terrain,
+                l'extension <strong>LargeMap / PlayableWorld 57,344 km</strong> et la stabilisation à
+                l'exécution restent expérimentaux.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-3">
                 <a
