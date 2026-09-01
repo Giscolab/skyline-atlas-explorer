@@ -17,9 +17,10 @@ import {
 import { MapPlot } from "@/components/MapPlot";
 
 const REPO = "https://github.com/Giscolab/CityTimeline-Mod";
-const TITLE = "CityTimelineMod — Construisez des villes depuis le monde réel";
+const REALMAP_REPO = "https://github.com/Giscolab/cs2-realmap-generator";
+const TITLE = "CityTimelineMod — Overlays GeoJSON géospatiaux pour Cities: Skylines II";
 const DESCRIPTION =
-  "Mod géospatial expérimental pour Cities: Skylines II : chargement de bundles GeoJSON RealMap, calques routes, eau, zonage et rail, calibration du terrain et système LargeMap / PlayableWorld de 57,344 km.";
+  "Mod de visualisation géospatiale pour Cities: Skylines II : chargement de bundles GeoJSON RealMap, calques routes, eau, zonage et rail, calibration spatiale et guidage géographique in-game. Extension LargeMap / PlayableWorld 57,344 km expérimentale.";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -106,21 +107,21 @@ const architecture = [
 
 const status = [
   {
-    state: "Expérimental",
-    tone: "primary" as const,
-    items: [
-      "Système LargeMap / PlayableWorld 57,344 km",
-      "Calibration automatique du terrain",
-      "Stabilité du rendu sur bundles très larges",
-    ],
-  },
-  {
-    state: "En cours",
+    state: "Implémenté",
     tone: "accent" as const,
     items: [
       "Chargement des bundles GeoJSON RealMap",
       "Rendu des calques routes, eau, zonage, rail",
       "Contrôles d'affichage des overlays",
+    ],
+  },
+  {
+    state: "Expérimental",
+    tone: "primary" as const,
+    items: [
+      "Calibration et alignement du terrain",
+      "Extension LargeMap / PlayableWorld 57,344 km",
+      "Stabilisation à l'exécution sur bundles très larges",
     ],
   },
   {
