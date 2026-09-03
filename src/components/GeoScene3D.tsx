@@ -76,7 +76,6 @@ function WaterLayer({ visible }: { visible: boolean }) {
 }
 
 function ZoningLayer({ visible }: { visible: boolean }) {
-  if (!visible) return null;
   const zones = useMemo(
     () => [
       { x: -14, z: -6, w: 8, d: 6 },
@@ -86,6 +85,8 @@ function ZoningLayer({ visible }: { visible: boolean }) {
     ],
     []
   );
+  if (!visible) return null;
+
 
   return (
     <group>
