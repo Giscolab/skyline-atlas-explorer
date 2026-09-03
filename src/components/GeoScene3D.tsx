@@ -161,7 +161,6 @@ function RoadLayer({ visible }: { visible: boolean }) {
 }
 
 function RailLayer({ visible }: { visible: boolean }) {
-  if (!visible) return null;
   const points = useMemo(
     () =>
       [
@@ -174,8 +173,10 @@ function RailLayer({ visible }: { visible: boolean }) {
     []
   );
   const curve = useMemo(() => new THREE.CatmullRomCurve3(points), [points]);
+  if (!visible) return null;
 
   return (
+
     <mesh>
       <tubeGeometry args={[curve, 80, 0.12, 8, false]} />
       <meshStandardMaterial
