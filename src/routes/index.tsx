@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Github,
   Globe2,
@@ -190,7 +190,11 @@ function Index() {
                 {label}
               </a>
             ))}
+            <Link to="/demo" className="label-mono text-primary transition-opacity hover:opacity-80">
+              Démo 3D
+            </Link>
           </nav>
+
           <a
             href={REPO}
             target="_blank"
@@ -321,8 +325,16 @@ function Index() {
                 </article>
               ))}
             </div>
+            <p className="mt-8 text-sm text-muted-foreground">
+              Un aperçu web des calques est disponible dans la{" "}
+              <Link to="/demo" className="text-primary underline underline-offset-4">
+                démo 3D interactive
+              </Link>{" "}
+              (démonstration hors jeu).
+            </p>
           </div>
         </section>
+
 
         {/* 57 KM WORLD */}
         <section id="world" className="border-b border-border">
