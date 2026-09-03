@@ -1,7 +1,8 @@
 import { useRef, useMemo, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Grid, Html } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Grid } from "@react-three/drei";
 import * as THREE from "three";
+
 
 const WATER_COLOR = "#5fa3b8";
 const ROAD_COLOR = "#c9c4b8";
