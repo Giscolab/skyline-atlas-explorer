@@ -106,7 +106,6 @@ function ZoningLayer({ visible }: { visible: boolean }) {
 }
 
 function RoadLayer({ visible }: { visible: boolean }) {
-  if (!visible) return null;
   const roads = useMemo(
     () => [
       [
@@ -138,8 +137,10 @@ function RoadLayer({ visible }: { visible: boolean }) {
     ],
     []
   );
+  if (!visible) return null;
 
   return (
+
     <group>
       {roads.map((points, i) => {
         const curve = new THREE.CatmullRomCurve3(
