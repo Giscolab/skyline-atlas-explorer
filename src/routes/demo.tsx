@@ -1,6 +1,18 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, ClientOnly } from "@tanstack/react-router";
 import { ArrowLeft, FlaskConical } from "lucide-react";
-import { GeoScene3D } from "@/components/GeoScene3D";
+import { lazy, Suspense } from "react";
+
+const GeoScene3D = lazy(() =>
+  import("@/components/GeoScene3D").then((m) => ({ default: m.GeoScene3D }))
+);
+
+function SceneSkeleton() {
+  return (
+    <div className="flex h-[60vh] min-h-[420px] w-full items-center justify-center rounded-lg border border-border bg-background sm:h-[70vh]">
+      <p className="label-mono text-muted-foreground">Chargement de la scène 3D…</p>
+    </div>
+  );
+}
 
 const CANONICAL = "https://giscolab.github.io/CityTimeline-Mod/demo";
 const TITLE = "Démo 3D — CityTimelineMod";
@@ -8,7 +20,6 @@ const DESCRIPTION =
   "Démonstration web 3D des calques GeoJSON de CityTimelineMod : routes, eau, zonage, rail, relief procédural et points de calibration.";
 
 export const Route = createFileRoute("/demo")({
-  ssr: false,
   head: () => ({
     meta: [
       { title: TITLE },
@@ -52,7 +63,11 @@ function DemoPage() {
         </p>
 
         <div className="mt-10">
-          <GeoScene3D />
+          <ClientOnly fallback={<SceneSkeleton />}>
+            <Suspense fallback={<SceneSkeleton />}>
+              <GeoScene3D />
+            </Suspense>
+          </ClientOnly>
         </div>
       </main>
     </div>
