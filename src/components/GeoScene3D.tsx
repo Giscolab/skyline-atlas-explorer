@@ -11,6 +11,11 @@ const RAIL_COLOR = "#d4b46a";
 const PRIMARY_COLOR = "#7dd3fc";
 const TERRAIN_COLOR = "#2a3b3f";
 
+type LayerKey = "roads" | "water" | "zoning" | "rail";
+type Layers = Record<LayerKey, boolean>;
+
+type Point2 = readonly [number, number];
+
 function terrainHeight(x: number, y: number) {
   return (
     Math.sin(x * 0.12) * 1.2 +
@@ -26,7 +31,7 @@ function Terrain() {
   const geometry = useMemo(() => {
     const geo = new THREE.PlaneGeometry(60, 60, 80, 80);
     geo.rotateX(-Math.PI / 2);
-    const pos = geo.attributes.position;
+    const pos = geo.getAttribute("position");
     for (let i = 0; i < pos.count; i++) {
       const x = pos.getX(i);
       const z = pos.getZ(i);
@@ -107,7 +112,7 @@ function ZoningLayer({ visible }: { visible: boolean }) {
 }
 
 function RoadLayer({ visible }: { visible: boolean }) {
-  const roads = useMemo(
+  const roads = useMemo<readonly Point2[][]>(
     () => [
       [
         [-28, 4],
@@ -164,13 +169,13 @@ function RoadLayer({ visible }: { visible: boolean }) {
 function RailLayer({ visible }: { visible: boolean }) {
   const points = useMemo(
     () =>
-      [
+      ([
         [-28, 10],
         [-12, 8],
         [0, 10],
         [14, 6],
         [28, 8],
-      ].map(([x, z]) => new THREE.Vector3(x, terrainHeight(x, z) + 0.08, z)),
+      ] as Point2[]).map(([x, z]) => new THREE.Vector3(x, terrainHeight(x, z) + 0.08, z)),
     []
   );
   const curve = useMemo(() => new THREE.CatmullRomCurve3(points), [points]);
@@ -190,7 +195,7 @@ function RailLayer({ visible }: { visible: boolean }) {
 }
 
 function CalibrationPoints() {
-  const points = useMemo(
+  const points = useMemo<Point2[]>(
     () => [
       [-10, 4],
       [8, 12],
@@ -220,7 +225,7 @@ function CalibrationPoints() {
   );
 }
 
-function Scene({ layers }: { layers: Record<string, boolean> }) {
+function Scene({ layers }: { layers: Layers }) {
   return (
     <>
       <color attach="background" args={["#0f172a"]} />
@@ -283,14 +288,14 @@ function Fallback() {
 }
 
 export function GeoScene3D() {
-  const [layers, setLayers] = useState({
+  const [layers, setLayers] = useState<Layers>({
     roads: true,
     water: true,
     zoning: true,
     rail: true,
   });
 
-  const toggle = (key: keyof typeof layers) => {
+  const toggle = (key: LayerKey) => {
     setLayers((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
@@ -310,23 +315,23 @@ export function GeoScene3D() {
         <div className="pointer-events-auto rounded-md border border-border bg-background/90 p-3 shadow-panel backdrop-blur">
           <p className="label-mono mb-3 text-primary">Calques GeoJSON</p>
           <div className="space-y-2">
-            {[
+            {([
               ["roads", "Routes", ROAD_COLOR],
               ["water", "Eau", WATER_COLOR],
               ["zoning", "Zonage", ZONING_COLOR],
               ["rail", "Rail", RAIL_COLOR],
-            ].map(([key, label, color]) => (
+            ] as Array<[LayerKey, string, string]>).map(([key, label, color]) => (
               <button
                 key={key}
-                onClick={() => toggle(key as keyof typeof layers)}
+                onClick={() => toggle(key)}
                 className="flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-xs transition-colors hover:bg-secondary"
               >
                 <span
                   className="size-2 rounded-full"
-                  style={{ backgroundColor: color, opacity: layers[key as keyof typeof layers] ? 1 : 0.25 }}
+                  style={{ backgroundColor: color, opacity: layers[key] ? 1 : 0.25 }}
                   aria-hidden
                 />
-                <span className={layers[key as keyof typeof layers] ? "text-foreground" : "text-muted-foreground line-through"}>
+                <span className={layers[key] ? "text-foreground" : "text-muted-foreground line-through"}>
                   {label}
                 </span>
               </button>
