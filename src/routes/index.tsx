@@ -190,7 +190,11 @@ function Index() {
                 {label}
               </a>
             ))}
+            <Link to="/demo" className="label-mono text-primary transition-opacity hover:opacity-80">
+              Démo 3D
+            </Link>
           </nav>
+
           <a
             href={REPO}
             target="_blank"
