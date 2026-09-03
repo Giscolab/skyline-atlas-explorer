@@ -300,7 +300,7 @@ export function GeoScene3D() {
         shadows
         camera={{ position: [35, 28, 35], fov: 45 }}
         dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: false }}
+        gl={{ antialias: true, alpha: false, preserveDrawingBuffer: true }}
         fallback={<Fallback />}
       >
         <Scene layers={layers} />
