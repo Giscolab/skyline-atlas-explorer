@@ -48,7 +48,6 @@ function Terrain() {
 }
 
 function WaterLayer({ visible }: { visible: boolean }) {
-  if (!visible) return null;
   const shape = useMemo(() => {
     const s = new THREE.Shape();
     s.moveTo(-18, -12);
@@ -59,6 +58,8 @@ function WaterLayer({ visible }: { visible: boolean }) {
     s.closePath();
     return s;
   }, []);
+  if (!visible) return null;
+
 
   return (
     <mesh position={[0, 0.15, 0]} rotation={[-Math.PI / 2, 0, 0]}>
