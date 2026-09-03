@@ -231,7 +231,10 @@ function Scene({ layers }: { layers: Record<string, boolean> }) {
         intensity={1.4}
         castShadow
         shadow-mapSize={[2048, 2048]}
-        shadow-camera={{ left: -40, right: 40, top: 40, bottom: -40 }}
+        shadow-camera-left={-40}
+        shadow-camera-right={40}
+        shadow-camera-top={40}
+        shadow-camera-bottom={-40}
       />
       <pointLight position={[-10, 15, -10]} intensity={0.6} color="#7dd3fc" />
 
