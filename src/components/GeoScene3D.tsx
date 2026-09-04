@@ -40,7 +40,7 @@ function createTransform(meta: Bundle["metadata"]) {
   const scale = WORLD_WIDTH / sizeX;
   const worldDepth = sizeY * scale;
   const { grid, min, max, values } = meta.elevation;
-  const heightScale = (scale * VERTICAL_EXAGGERATION * (max - min)) / Math.max(max - min, 1);
+  const heightScale = scale * VERTICAL_EXAGGERATION;
 
   // x = est (mètres), z = -nord (mètres)
   const toWorldXZ = (mx: number, my: number): [number, number] => [mx * scale, -my * scale];
@@ -64,7 +64,7 @@ function createTransform(meta: Bundle["metadata"]) {
       sampleGrid(i + 1, j) * fu * (1 - fv) +
       sampleGrid(i, j + 1) * (1 - fu) * fv +
       sampleGrid(i + 1, j + 1) * fu * fv;
-    return (h - min) * heightScale * VERTICAL_EXAGGERATION;
+    return (h - min) * heightScale;
   };
 
   return { scale, worldDepth, grid, toWorldXZ, heightAt, minElevation: min, maxElevation: max };
