@@ -349,7 +349,7 @@ export function GeoScene3D() {
     <div className="relative h-[60vh] min-h-[420px] w-full overflow-hidden rounded-lg border border-border bg-background sm:h-[70vh]">
       {bundle ? (
         <Canvas
-          camera={{ position: [34, 26, 40], fov: 45 }}
+          camera={{ position: [42, 34, 50], fov: 45 }}
           dpr={[1, 1.5]}
           gl={{ antialias: true, alpha: false }}
           fallback={<Fallback />}

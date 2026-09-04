@@ -17,7 +17,7 @@ function SceneSkeleton() {
 const CANONICAL = "https://giscolab.github.io/CityTimeline-Mod/demo";
 const TITLE = "Démo 3D — CityTimelineMod";
 const DESCRIPTION =
-  "Démonstration web 3D des calques GeoJSON de CityTimelineMod : routes, eau, zonage, rail, relief procédural et points de calibration.";
+  "Démonstration web 3D d'un bundle GeoJSON RealMap réel (OpenStreetMap) : routes, eau, zonage, rail et relief issu de données d'altitude SRTM.";
 
 export const Route = createFileRoute("/demo")({
   head: () => ({
@@ -57,9 +57,9 @@ function DemoPage() {
           Démo 3D des calques géospatiaux
         </h1>
         <p className="mt-5 max-w-2xl text-muted-foreground">
-          Aperçu web du relief procédural et des quatre calques d'un bundle RealMap. Utilisez la
-          souris pour orbiter, zoomer et déplacer la caméra ; activez ou désactivez chaque calque
-          depuis le panneau.
+          Aperçu web d'un bundle RealMap réel (Lyon, données OpenStreetMap) posé sur un relief
+          reconstruit à partir d'altitudes SRTM. Utilisez la souris pour orbiter, zoomer et déplacer
+          la caméra ; activez ou désactivez chaque calque depuis le panneau.
         </p>
 
         <div className="mt-10">
