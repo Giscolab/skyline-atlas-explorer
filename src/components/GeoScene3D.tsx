@@ -97,6 +97,7 @@ function buildLineGeometry(
     const pts = f.geometry.coordinates;
     for (let i = 0; i < pts.length - 1; i++) {
       for (const p of [pts[i], pts[i + 1]]) {
+        if (!p) continue;
         const [x, z] = t.toWorldXZ(p[0], p[1]);
         verts.push(x, t.heightAt(x, z) + lift, z);
       }
@@ -117,7 +118,9 @@ function buildPolygonGeometry(
   const parts: THREE.BufferGeometry[] = [];
   for (const f of bundle.features) {
     if (f.properties.layer !== layer || f.geometry.type !== "Polygon") continue;
-    const ring = f.geometry.coordinates[0].map(([mx, my]) => {
+    const outer = f.geometry.coordinates[0];
+    if (!outer) continue;
+    const ring = outer.map(([mx, my]) => {
       const [x, z] = t.toWorldXZ(mx, my);
       return new THREE.Vector2(x, z);
     });
@@ -162,13 +165,14 @@ function CalibrationPoints({ bundle, t }: { bundle: Bundle; t: Transform }) {
   const marks = useMemo(() => {
     const named = bundle.features.filter((f) => f.properties.name && f.properties.layer === "roads");
     const picks = [named[0], named[Math.floor(named.length / 2)], named[named.length - 1]].filter(
-      Boolean
+      (f): f is NonNullable<typeof f> => Boolean(f)
     );
-    return picks.map((f) => {
+    return picks.flatMap((f) => {
       const coords = (f.geometry as { coordinates: [number, number][] }).coordinates;
       const mid = coords[Math.floor(coords.length / 2)];
+      if (!mid) return [];
       const [x, z] = t.toWorldXZ(mid[0], mid[1]);
-      return { x, z, y: t.heightAt(x, z), label: f.properties.name as string };
+      return [{ x, z, y: t.heightAt(x, z), label: f.properties.name ?? "" }];
     });
   }, [bundle, t]);
 
