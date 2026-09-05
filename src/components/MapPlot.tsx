@@ -59,6 +59,29 @@ export function MapPlot({ className = "" }: { className?: string }) {
         strokeDasharray="10 8"
       />
 
+      {/* chemins */}
+      <g stroke="var(--path)" strokeOpacity="0.5" strokeWidth="1" strokeDasharray="3 5" fill="none">
+        <path d="M120 420 C 170 340 150 260 210 190" />
+        <path d="M520 60 C 470 140 520 200 560 260" />
+      </g>
+
+      {/* services (points / centroïdes) */}
+      <g fill="var(--service)" fillOpacity="0.9">
+        {[
+          [128, 132],
+          [240, 154],
+          [392, 116],
+          [446, 232],
+          [92, 262],
+          [330, 214],
+          [540, 148],
+          [196, 336],
+          [472, 356],
+        ].map(([cx, cy]) => (
+          <rect key={`s${cx}-${cy}`} x={(cx as number) - 3} y={(cy as number) - 3} width="6" height="6" />
+        ))}
+      </g>
+
       {/* points de calibration */}
       <g fill="var(--primary)">
         {[
