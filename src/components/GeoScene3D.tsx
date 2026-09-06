@@ -388,7 +388,15 @@ export function GeoScene3D() {
   const toggle = (key: LayerKey) => setLayers((prev) => ({ ...prev, [key]: !prev[key] }));
 
   const counts = useMemo(() => {
-    const c: Record<LayerKey, number> = { roads: 0, water: 0, zoning: 0, rail: 0 };
+    const c: Record<LayerKey, number> = {
+      roads: 0,
+      paths: 0,
+      water: 0,
+      zoning: 0,
+      rail: 0,
+      services: 0,
+    };
+
     bundle?.features.forEach((f) => {
       if (f.properties.layer in c) c[f.properties.layer] += 1;
     });
