@@ -8,13 +8,15 @@ const WATER_COLOR = "#5fa3b8";
 const ROAD_COLOR = "#c9c4b8";
 const ZONING_COLOR = "#d4a76a";
 const RAIL_COLOR = "#d4b46a";
+const PATH_COLOR = "#8fbf9f";
+const SERVICE_COLOR = "#c79ad8";
 const PRIMARY_COLOR = "#7dd3fc";
 const TERRAIN_COLOR = "#2a3b3f";
 
 const WORLD_WIDTH = 60;
 const VERTICAL_EXAGGERATION = 2.6;
 
-type LayerKey = "roads" | "water" | "zoning" | "rail";
+type LayerKey = "roads" | "paths" | "water" | "zoning" | "rail" | "services";
 type Layers = Record<LayerKey, boolean>;
 
 type Bundle = {
@@ -30,9 +32,11 @@ type Bundle = {
     properties: { layer: LayerKey; kind?: string; name?: string };
     geometry:
       | { type: "LineString"; coordinates: [number, number][] }
+      | { type: "Point"; coordinates: [number, number] }
       | { type: "Polygon"; coordinates: [number, number][][] };
   }>;
 };
+
 
 /** Convertit un bundle RealMap (mètres locaux + grille SRTM) en espace de scène. */
 function createTransform(meta: Bundle["metadata"]) {
