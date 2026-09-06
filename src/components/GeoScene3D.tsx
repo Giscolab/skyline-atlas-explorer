@@ -271,6 +271,13 @@ function Scene({ bundle, layers }: { bundle: Bundle; layers: Layers }) {
         </mesh>
       ) : null}
 
+      {layers.water && waterLines ? (
+        <lineSegments geometry={waterLines}>
+          <lineBasicMaterial color={WATER_COLOR} transparent opacity={0.85} />
+        </lineSegments>
+      ) : null}
+
+
       {layers.zoning && zoning ? (
         <mesh geometry={zoning}>
           <meshStandardMaterial
