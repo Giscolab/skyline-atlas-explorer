@@ -233,6 +233,8 @@ function Scene({ bundle, layers }: { bundle: Bundle; layers: Layers }) {
 
   const roads = useMemo(() => buildLineGeometry(bundle, t, "roads", 0.06), [bundle, t]);
   const paths = useMemo(() => buildLineGeometry(bundle, t, "paths", 0.04), [bundle, t]);
+  const waterLines = useMemo(() => buildLineGeometry(bundle, t, "water", 0.08), [bundle, t]);
+
   const rail = useMemo(() => buildLineGeometry(bundle, t, "rail", 0.1), [bundle, t]);
   const services = useMemo(() => buildPointsGeometry(bundle, t, "services", 0.35), [bundle, t]);
   const water = useMemo(
