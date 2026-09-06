@@ -287,11 +287,30 @@ function Scene({ bundle, layers }: { bundle: Bundle; layers: Layers }) {
         </lineSegments>
       ) : null}
 
+      {layers.paths && paths ? (
+        <lineSegments geometry={paths}>
+          <lineBasicMaterial color={PATH_COLOR} transparent opacity={0.5} />
+        </lineSegments>
+      ) : null}
+
       {layers.rail && rail ? (
         <lineSegments geometry={rail}>
           <lineBasicMaterial color={RAIL_COLOR} transparent opacity={0.85} />
         </lineSegments>
       ) : null}
+
+      {layers.services && services ? (
+        <points geometry={services}>
+          <pointsMaterial
+            color={SERVICE_COLOR}
+            size={0.45}
+            sizeAttenuation
+            transparent
+            opacity={0.95}
+          />
+        </points>
+      ) : null}
+
 
       <CalibrationPoints bundle={bundle} t={t} />
 
