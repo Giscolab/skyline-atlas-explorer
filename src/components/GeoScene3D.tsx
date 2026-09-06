@@ -479,15 +479,19 @@ export function GeoScene3D() {
         ) : null}
       </div>
 
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 space-y-1 p-4">
-        <p className="text-center text-xs text-muted-foreground">
-          Données réelles : OpenStreetMap (ODbL) via Overpass API · altitudes SRTM (open-elevation).
-        </p>
-        <p className="text-center text-xs text-muted-foreground">
-          Démonstration web uniquement — le rendu final dans Cities: Skylines II dépend de l'API
-          modding du jeu.
-        </p>
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center p-4">
+        <div className="max-w-xl rounded-md border border-border bg-background/85 px-3 py-2 text-center backdrop-blur">
+          <p className="font-mono text-[10px] leading-relaxed text-muted-foreground">
+            Données réelles : OpenStreetMap (ODbL) via Overpass API · altitudes SRTM
+            (open-elevation).
+          </p>
+          <p className="font-mono text-[10px] leading-relaxed text-muted-foreground">
+            Démonstration web uniquement — le rendu final dans Cities: Skylines II dépend de l'API
+            modding du jeu.
+          </p>
+        </div>
       </div>
+
     </div>
   );
 }
