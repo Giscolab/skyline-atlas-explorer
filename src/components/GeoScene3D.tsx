@@ -8,13 +8,15 @@ const WATER_COLOR = "#5fa3b8";
 const ROAD_COLOR = "#c9c4b8";
 const ZONING_COLOR = "#d4a76a";
 const RAIL_COLOR = "#d4b46a";
+const PATH_COLOR = "#8fbf9f";
+const SERVICE_COLOR = "#c79ad8";
 const PRIMARY_COLOR = "#7dd3fc";
 const TERRAIN_COLOR = "#2a3b3f";
 
 const WORLD_WIDTH = 60;
 const VERTICAL_EXAGGERATION = 2.6;
 
-type LayerKey = "roads" | "water" | "zoning" | "rail";
+type LayerKey = "roads" | "paths" | "water" | "zoning" | "rail" | "services";
 type Layers = Record<LayerKey, boolean>;
 
 type Bundle = {
@@ -30,9 +32,11 @@ type Bundle = {
     properties: { layer: LayerKey; kind?: string; name?: string };
     geometry:
       | { type: "LineString"; coordinates: [number, number][] }
+      | { type: "Point"; coordinates: [number, number] }
       | { type: "Polygon"; coordinates: [number, number][][] };
   }>;
 };
+
 
 /** Convertit un bundle RealMap (mètres locaux + grille SRTM) en espace de scène. */
 function createTransform(meta: Bundle["metadata"]) {
@@ -108,6 +112,27 @@ function buildLineGeometry(
   geo.setAttribute("position", new THREE.Float32BufferAttribute(verts, 3));
   return geo;
 }
+
+function buildPointsGeometry(
+  bundle: Bundle,
+  t: Transform,
+  layer: LayerKey,
+  lift: number
+): THREE.BufferGeometry | null {
+  const verts: number[] = [];
+  for (const f of bundle.features) {
+    if (f.properties.layer !== layer || f.geometry.type !== "Point") continue;
+    const p = f.geometry.coordinates;
+    const [x, z] = t.toWorldXZ(p[0], p[1]);
+    verts.push(x, t.heightAt(x, z) + lift, z);
+  }
+  if (!verts.length) return null;
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute("position", new THREE.Float32BufferAttribute(verts, 3));
+  return geo;
+}
+
+
 
 function buildPolygonGeometry(
   bundle: Bundle,
@@ -207,7 +232,11 @@ function Scene({ bundle, layers }: { bundle: Bundle; layers: Layers }) {
   const terrain = useTerrainGeometry(t);
 
   const roads = useMemo(() => buildLineGeometry(bundle, t, "roads", 0.06), [bundle, t]);
+  const paths = useMemo(() => buildLineGeometry(bundle, t, "paths", 0.04), [bundle, t]);
+  const waterLines = useMemo(() => buildLineGeometry(bundle, t, "water", 0.08), [bundle, t]);
+
   const rail = useMemo(() => buildLineGeometry(bundle, t, "rail", 0.1), [bundle, t]);
+  const services = useMemo(() => buildPointsGeometry(bundle, t, "services", 0.35), [bundle, t]);
   const water = useMemo(
     () => buildPolygonGeometry(bundle, t, "water", { lift: 0.05, flatten: true }),
     [bundle, t]
@@ -216,6 +245,7 @@ function Scene({ bundle, layers }: { bundle: Bundle; layers: Layers }) {
     () => buildPolygonGeometry(bundle, t, "zoning", { lift: 0.2 }),
     [bundle, t]
   );
+
 
   return (
     <>
@@ -241,6 +271,13 @@ function Scene({ bundle, layers }: { bundle: Bundle; layers: Layers }) {
         </mesh>
       ) : null}
 
+      {layers.water && waterLines ? (
+        <lineSegments geometry={waterLines}>
+          <lineBasicMaterial color={WATER_COLOR} transparent opacity={0.85} />
+        </lineSegments>
+      ) : null}
+
+
       {layers.zoning && zoning ? (
         <mesh geometry={zoning}>
           <meshStandardMaterial
@@ -259,11 +296,30 @@ function Scene({ bundle, layers }: { bundle: Bundle; layers: Layers }) {
         </lineSegments>
       ) : null}
 
+      {layers.paths && paths ? (
+        <lineSegments geometry={paths}>
+          <lineBasicMaterial color={PATH_COLOR} transparent opacity={0.5} />
+        </lineSegments>
+      ) : null}
+
       {layers.rail && rail ? (
         <lineSegments geometry={rail}>
           <lineBasicMaterial color={RAIL_COLOR} transparent opacity={0.85} />
         </lineSegments>
       ) : null}
+
+      {layers.services && services ? (
+        <points geometry={services}>
+          <pointsMaterial
+            color={SERVICE_COLOR}
+            size={0.45}
+            sizeAttenuation
+            transparent
+            opacity={0.95}
+          />
+        </points>
+      ) : null}
+
 
       <CalibrationPoints bundle={bundle} t={t} />
 
@@ -311,10 +367,13 @@ export function GeoScene3D() {
   const [error, setError] = useState<string | null>(null);
   const [layers, setLayers] = useState<Layers>({
     roads: true,
+    paths: true,
     water: true,
     zoning: true,
     rail: true,
+    services: true,
   });
+
 
   useEffect(() => {
     let cancelled = false;
@@ -338,7 +397,15 @@ export function GeoScene3D() {
   const toggle = (key: LayerKey) => setLayers((prev) => ({ ...prev, [key]: !prev[key] }));
 
   const counts = useMemo(() => {
-    const c: Record<LayerKey, number> = { roads: 0, water: 0, zoning: 0, rail: 0 };
+    const c: Record<LayerKey, number> = {
+      roads: 0,
+      paths: 0,
+      water: 0,
+      zoning: 0,
+      rail: 0,
+      services: 0,
+    };
+
     bundle?.features.forEach((f) => {
       if (f.properties.layer in c) c[f.properties.layer] += 1;
     });
@@ -374,9 +441,12 @@ export function GeoScene3D() {
             {(
               [
                 ["roads", "Routes", ROAD_COLOR],
+                ["paths", "Chemins", PATH_COLOR],
                 ["water", "Eau", WATER_COLOR],
                 ["zoning", "Zonage", ZONING_COLOR],
                 ["rail", "Rail", RAIL_COLOR],
+                ["services", "Services", SERVICE_COLOR],
+
               ] as Array<[LayerKey, string, string]>
             ).map(([key, label, color]) => (
               <button
@@ -418,15 +488,19 @@ export function GeoScene3D() {
         ) : null}
       </div>
 
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 space-y-1 p-4">
-        <p className="text-center text-xs text-muted-foreground">
-          Données réelles : OpenStreetMap (ODbL) via Overpass API · altitudes SRTM (open-elevation).
-        </p>
-        <p className="text-center text-xs text-muted-foreground">
-          Démonstration web uniquement — le rendu final dans Cities: Skylines II dépend de l'API
-          modding du jeu.
-        </p>
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center p-4">
+        <div className="max-w-xl rounded-md border border-border bg-background/85 px-3 py-2 text-center backdrop-blur">
+          <p className="font-mono text-[10px] leading-relaxed text-muted-foreground">
+            Données réelles : OpenStreetMap (ODbL) via Overpass API · altitudes SRTM
+            (open-elevation).
+          </p>
+          <p className="font-mono text-[10px] leading-relaxed text-muted-foreground">
+            Démonstration web uniquement — le rendu final dans Cities: Skylines II dépend de l'API
+            modding du jeu.
+          </p>
+        </div>
       </div>
+
     </div>
   );
 }
