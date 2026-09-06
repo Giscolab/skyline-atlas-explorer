@@ -113,6 +113,27 @@ function buildLineGeometry(
   return geo;
 }
 
+function buildPointsGeometry(
+  bundle: Bundle,
+  t: Transform,
+  layer: LayerKey,
+  lift: number
+): THREE.BufferGeometry | null {
+  const verts: number[] = [];
+  for (const f of bundle.features) {
+    if (f.properties.layer !== layer || f.geometry.type !== "Point") continue;
+    const p = f.geometry.coordinates;
+    const [x, z] = t.toWorldXZ(p[0], p[1]);
+    verts.push(x, t.heightAt(x, z) + lift, z);
+  }
+  if (!verts.length) return null;
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute("position", new THREE.Float32BufferAttribute(verts, 3));
+  return geo;
+}
+
+
+
 function buildPolygonGeometry(
   bundle: Bundle,
   t: Transform,
