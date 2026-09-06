@@ -358,10 +358,13 @@ export function GeoScene3D() {
   const [error, setError] = useState<string | null>(null);
   const [layers, setLayers] = useState<Layers>({
     roads: true,
+    paths: true,
     water: true,
     zoning: true,
     rail: true,
+    services: true,
   });
+
 
   useEffect(() => {
     let cancelled = false;
