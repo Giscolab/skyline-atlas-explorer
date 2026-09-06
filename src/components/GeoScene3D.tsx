@@ -232,7 +232,9 @@ function Scene({ bundle, layers }: { bundle: Bundle; layers: Layers }) {
   const terrain = useTerrainGeometry(t);
 
   const roads = useMemo(() => buildLineGeometry(bundle, t, "roads", 0.06), [bundle, t]);
+  const paths = useMemo(() => buildLineGeometry(bundle, t, "paths", 0.04), [bundle, t]);
   const rail = useMemo(() => buildLineGeometry(bundle, t, "rail", 0.1), [bundle, t]);
+  const services = useMemo(() => buildPointsGeometry(bundle, t, "services", 0.35), [bundle, t]);
   const water = useMemo(
     () => buildPolygonGeometry(bundle, t, "water", { lift: 0.05, flatten: true }),
     [bundle, t]
@@ -241,6 +243,7 @@ function Scene({ bundle, layers }: { bundle: Bundle; layers: Layers }) {
     () => buildPolygonGeometry(bundle, t, "zoning", { lift: 0.2 }),
     [bundle, t]
   );
+
 
   return (
     <>
