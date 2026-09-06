@@ -432,9 +432,12 @@ export function GeoScene3D() {
             {(
               [
                 ["roads", "Routes", ROAD_COLOR],
+                ["paths", "Chemins", PATH_COLOR],
                 ["water", "Eau", WATER_COLOR],
                 ["zoning", "Zonage", ZONING_COLOR],
                 ["rail", "Rail", RAIL_COLOR],
+                ["services", "Services", SERVICE_COLOR],
+
               ] as Array<[LayerKey, string, string]>
             ).map(([key, label, color]) => (
               <button
