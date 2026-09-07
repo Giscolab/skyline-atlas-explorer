@@ -321,10 +321,13 @@ function Index() {
               </dl>
             </div>
 
-            <div className="panel relative overflow-hidden p-3">
-              <div className="flex items-center justify-between px-2 pb-3">
-                <span className="label-mono">geojson_pack / all_features.geojson</span>
-                <span className="label-mono text-primary">layers · 6</span>
+            <div className="panel relative overflow-hidden p-3 sm:p-4">
+              <div className="flex items-start justify-between gap-4 px-1 pb-3">
+                <div>
+                  <p className="font-display text-sm font-semibold text-foreground">Les données réelles, superposées sur la carte</p>
+                  <p className="mt-1 font-mono text-[0.62rem] text-muted-foreground">Exemple de lecture · extrait de Lyon</p>
+                </div>
+                <span className="shrink-0 rounded-sm border border-primary/30 bg-primary/10 px-2 py-1 font-mono text-[0.62rem] text-primary">6 calques</span>
               </div>
               <div className="relative overflow-hidden rounded-sm border border-border bg-background">
                 <MapPlot className="block w-full" />
@@ -333,14 +336,20 @@ function Index() {
                   aria-hidden
                 />
               </div>
-              <div className="flex flex-wrap gap-x-4 gap-y-2 px-2 pt-3">
-                {layers.map(({ name, dot }) => (
-                  <span key={name} className="label-mono flex items-center gap-2">
-                    <span className={`size-2 rounded-full ${dot}`} aria-hidden />
-                    {name}
-                  </span>
+              <div className="grid grid-cols-2 gap-px overflow-hidden rounded-sm border border-border bg-border sm:grid-cols-3">
+                {layers.map(({ name, dot, detail }) => (
+                  <div key={name} className="flex min-w-0 items-center gap-2 bg-surface px-3 py-2.5">
+                    <span className={`size-2.5 shrink-0 rounded-full ${dot}`} aria-hidden />
+                    <span className="min-w-0">
+                      <span className="block text-xs font-medium text-foreground">{name}</span>
+                      <span className="block truncate font-mono text-[0.58rem] text-muted-foreground">{detail}</span>
+                    </span>
+                  </div>
                 ))}
               </div>
+              <p className="px-1 pt-3 text-xs leading-relaxed text-muted-foreground">
+                Chaque couleur correspond à un fichier ou groupe de fichiers du bundle, affiché au même emplacement géographique.
+              </p>
             </div>
           </div>
         </section>
